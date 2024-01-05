@@ -1,0 +1,36 @@
+gnnsafe w/o prop gcn
+OOD Test 1 Final AUROC: 70.98 OOD Test 1 Final AUPR: 45.70 OOD Test 1 Final FPR: 88.74
+IND Test Score: 76.40
+
+gnnsafe++ w/o prop gcn
+OOD Test 1 Final AUROC: 75.65 OOD Test 1 Final AUPR: 49.11 OOD Test 1 Final FPR: 68.35
+IND Test Score: 75.10
+
+gnnsafe gcn
+OOD Test 1 Final AUROC: 87.08 OOD Test 1 Final AUPR: 77.17 OOD Test 1 Final FPR: 74.19
+IND Test Score: 76.10
+
+gnnsafe++ gcn
+OOD Test 1 Final AUROC: 90.24 OOD Test 1 Final AUPR: 81.73 OOD Test 1 Final FPR: 56.31
+IND Test Score: 76.10
+
+gnnsafe w/o prop gen
+OOD Test 1 Final AUROC: 70.99 OOD Test 1 Final AUPR: 45.69 OOD Test 1 Final FPR: 89.03
+IND Test Score: 76.20
+
+gnnsafe++ w/o prop gen
+OOD Test 1 Final AUROC: 75.38 OOD Test 1 Final AUPR: 48.89 OOD Test 1 Final FPR: 68.94
+IND Test Score: 74.80
+
+gnnsafe gen
+OOD Test 1 Final AUROC: 87.12 OOD Test 1 Final AUPR: 77.08 OOD Test 1 Final FPR: 76.59
+IND Test Score: 76.30
+
+gnnsafe++ gen
+OOD Test 1 Final AUROC: 90.25 OOD Test 1 Final AUPR: 81.69 OOD Test 1 Final FPR: 56.09
+IND Test Score: 76.30
+
+gnnsafe++ gen
+OOD Test 1 Final AUROC: 90.18 OOD Test 1 Final AUPR: 81.65 OOD Test 1 Final FPR: 56.79
+IND Test Score: 76.20
+
