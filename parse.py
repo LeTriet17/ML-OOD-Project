@@ -14,7 +14,7 @@ def parser_add_main_args(parser):
     parser.add_argument('--valid_prop', type=float, default=.1,
                         help='validation label proportion')
     parser.add_argument('--runs', type=int, default=1, help='number of distinct runs')
-    parser.add_argument('--epochs', type=int, default=150)
+    parser.add_argument('--epochs', type=int, default=200)
 
     # model network
     parser.add_argument('--method', type=str, default='msp', choices=['msp', 'gnnsafe'])
