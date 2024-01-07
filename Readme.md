@@ -45,12 +45,6 @@ As for OOD data, we modified the original dataset to obtain OODTr and OODTe, wit
 
 ***Evalution Metrics***: the OOD detection performance is measured by AUROC, AUPR, FPR95 for discriminating IND-Te and OOD-Te.
 
-## Key Results
-
-<img width="700" alt="image" src="https://user-images.githubusercontent.com/22075007/219940154-fbd5cc2c-508e-437c-90b4-d485277f2152.png">
-
-<img width="700" alt="image" src="https://user-images.githubusercontent.com/22075007/219940165-425d6ee9-0ca3-4837-9c92-e14ccd63bd1c.png">
-
 
 
 
