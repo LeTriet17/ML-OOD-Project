@@ -142,49 +142,43 @@ class Logger_detect(object):
 
 def save_result(results, args):
     if args.dataset in ('cora', 'amazon-photo', 'coauthor-cs'):
-        filename = f'results/{args.dataset}-{args.ood_type}.csv'
+        filename = f'exp/{args.dataset}-{args.ood_type}.csv'
     else:
-        filename = f'results/{args.dataset}.csv'
+        filename = f'exp/{args.dataset}.csv'
 
-    if args.method == 'gnnsafe':
-        if args.use_prop:
-            name = 'gnnsafe++' if args.use_reg else 'gnnsafe'
-        else:
-            name = 'gnnsafe++ w/o prop' if args.use_reg else 'gnnsafe w/o prop'
-    else:
-        name = args.method
 
-    print(f"Saving results to {filename}")
-    with open(f"{filename}", 'a+') as write_obj:
-        write_obj.write(f"{name} {args.backbone}\n")
-        if args.print_args:
-            write_obj.write(f'{args}\n')
-        if results.shape[0] == 1: # one run
+    name = args.backbone
+    if args.use_reg:
+        name += '_reg'
+    if args.use_prop:
+        name += '_prop'
+    if args.use_oc:
+        name += '_oc'
+        
+    with open(filename, 'a+') as write_obj:
+
+        if write_obj.tell() == 0:  # Check if file is empty
+            write_obj.write(f'Backbone,Method,Value\n')
+        
+        if results.shape[0] == 1:  # one run
             auroc, aupr, fpr = [], [], []
             for k in range(results.shape[1] // 3):
                 r = results[:, k * 3]
                 auroc.append(r.mean())
-                write_obj.write(f'OOD Test {k + 1} Final AUROC: {r.mean():.2f} ')
+                write_obj.write(f'{name},AUROC,{r.mean():.2f}\n')
+                
                 r = results[:, k * 3 + 1]
                 aupr.append(r.mean())
-                write_obj.write(f'OOD Test {k + 1} Final AUPR: {r.mean():.2f} ')
+                write_obj.write(f'{name},AUPR,{r.mean():.2f}\n')
+                
                 r = results[:, k * 3 + 2]
                 fpr.append(r.mean())
-                write_obj.write(f'OOD Test {k + 1} Final FPR: {r.mean():.2f}\n')
-            if k > 0: # for multiple OODTe datasets, return the averaged metrics
-                write_obj.write(f'OOD Test Averaged Final AUROC: {np.mean(auroc):.2f} ')
-                write_obj.write(f'OOD Test Averaged Final AUPR: {np.mean(aupr):.2f} ')
-                write_obj.write(f'OOD Test Averaged Final FPR: {np.mean(fpr):.2f}\n')
+                write_obj.write(f'{name},FPR,{r.mean():.2f}\n')
+            
+            if k > 0:  # for multiple OODTe datasets, return the averaged metrics
+                write_obj.write(f'{name},AUROC,{np.mean(auroc):.2f}\n')
+                write_obj.write(f'{name},AUPR,{np.mean(aupr):.2f}\n')
+                write_obj.write(f'{name},FPR,{np.mean(fpr):.2f}\n')
+            
             r = results[:, -1]
-            write_obj.write(f'IND Test Score: {r.mean():.2f}\n')
-        else: # more than one runs, return std
-            for k in range(results.shape[1] // 3):
-                r = results[:, k * 3]
-                write_obj.write(f'OOD Test {k + 1} Final AUROC: {r.mean():.2f} ± {r.std():.2f} ')
-                r = results[:, k * 3 + 1]
-                write_obj.write(f'OOD Test {k + 1} Final AUPR: {r.mean():.2f} ± {r.std():.2f} ')
-                r = results[:, k * 3 + 2]
-                write_obj.write(f'OOD Test {k + 1} Final FPR: {r.mean():.2f} ± {r.std():.2f}\n')
-            r = results[:, -1]
-            write_obj.write(f'IND Test Score: {r.mean():.2f} ± {r.std():.2f}\n')
-        write_obj.write(f'\n')
+            write_obj.write(f'IND Test Score,IND,{r.mean():.2f}\n')

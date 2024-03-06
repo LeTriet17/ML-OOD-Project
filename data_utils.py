@@ -327,7 +327,7 @@ def evaluate_classify(model, dataset, eval_func, criterion, args, device):
     else:
         return train_score, valid_score, test_score
 
-#@torch.no_grad()
+@torch.no_grad()
 def evaluate_detect(model, dataset_ind, dataset_ood, criterion, eval_func, args, device, return_score=False):
     model.eval()
 
