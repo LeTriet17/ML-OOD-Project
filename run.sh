@@ -1,172 +1,32 @@
-##### Cora with structure ood
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
+#! /bin/bash
 
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
+backbones=("hybrid" "gcn"  "gen" "gat" )
+ood_types=("structure" "feature" "label")
+datasets=("cora" "amazon-photo" "coauthor-cs" "twitch" "arxiv")
+datasets=("arxiv")
+use_reg_options=("" "--use_reg --m_in -5 --m_out -1")
+use_prop_options=("" "--use_prop")
+use_oc_options=("" "--use_oc")
+epochs=125
+device=0
+lamda1=0.01
+lamda2=0.01
+nu=0.1
+eps=0.01
 
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-
-#### Cora with feature ood
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-#### Cora with label ood
-
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset cora --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gen --dataset cora --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gat --dataset cora --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-
-#### Amazon-photo with structure ood
-
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-
-#### Amazon-photo with feature ood
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-
-#### Amazon-photo with label ood
-
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gen --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0
-python main.py --method gnnsafe --backbone gat --dataset amazon-photo --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-
-### Coauthor with structure ood
-
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type structure --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type structure --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-
-
-### Coauthor with feature ood
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type feature --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type feature --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-
-
-### Coauthor with label ood
-
-
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-python main.py --method gnnsafe --backbone gcn --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01
-
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --epochs 125
-python main.py --method gnnsafe --backbone gen --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type label --mode detect --use_bn --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --epochs 125
-python main.py --method gnnsafe --backbone gat --dataset coauthor-cs --ood_type label --mode detect --use_bn --use_prop --use_reg --m_in -5 --m_out -1 --lamda1 0.01 --device 0 --use_oc True --lamda2 0.01  --nu 0.1 --eps 0.01 --epochs 125
-
-
-
+# Loop over different combinations of parameters
+for backbone in "${backbones[@]}"; do
+    for ood_type in "${ood_types[@]}"; do
+        for use_reg_option in "${use_reg_options[@]}"; do
+            for use_prop_option in "${use_prop_options[@]}"; do
+                for use_oc_option in "${use_oc_options[@]}"; do
+                    for dataset in "${datasets[@]}"; do
+                        cmd="python3 main.py --method gnnsafe --dataset $dataset --backbone $backbone --ood_type $ood_type --epochs $epochs --device $device --lamda1 $lamda1 --lamda2 $lamda2 --nu $nu --eps $eps $use_reg_option $use_prop_option $use_oc_option"
+                    echo $cmd
+                    $cmd
+                    done
+                done
+            done
+        done
+    done
+done

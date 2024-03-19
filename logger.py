@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-
+import os
 class Logger_classify(object):
     """ logger for node classification task, reporting train/valid/test accuracy or rocauc for classification """
     def __init__(self, runs, info=None):
@@ -146,6 +146,8 @@ def save_result(results, args):
     else:
         filename = f'exp/{args.dataset}.csv'
 
+    if not os.path.exists('exp'):
+        os.makedirs('exp')
 
     name = args.backbone
     if args.use_reg:
@@ -159,7 +161,6 @@ def save_result(results, args):
 
         if write_obj.tell() == 0:  # Check if file is empty
             write_obj.write(f'Backbone,Method,Value\n')
-        
         if results.shape[0] == 1:  # one run
             auroc, aupr, fpr = [], [], []
             for k in range(results.shape[1] // 3):
@@ -180,5 +181,5 @@ def save_result(results, args):
                 write_obj.write(f'{name},AUPR,{np.mean(aupr):.2f}\n')
                 write_obj.write(f'{name},FPR,{np.mean(fpr):.2f}\n')
             
-            r = results[:, -1]
-            write_obj.write(f'IND Test Score,IND,{r.mean():.2f}\n')
+            #r = results[:, -1]
+            #write_obj.write(f'IND Test Score,IND,{r.mean():.2f}\n')

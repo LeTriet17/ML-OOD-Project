@@ -62,9 +62,11 @@ def parser_add_main_args(parser):
     parser.add_argument('--mode', type=str, default='detect', choices=['classify', 'detect'])
     
     # oc loss
-    parser.add_argument('--use_oc', type=bool,default=False ,help='whether to use oc loss')
+    parser.add_argument('--use_oc', action='store_true' ,help='whether to use oc loss')
     parser.add_argument('--nu', type=float, default=0.1, help='hyper-parameter for oc loss')
     parser.add_argument('--eps', type=float, default=1e-6, help='hyper-parameter for oc loss')
 
+    # grad_norm
+    parser.add_argument('--grad_norm', action='store_true', help='whether to use grad norm')
 
 

@@ -336,8 +336,8 @@ def evaluate_detect(model, dataset_ind, dataset_ood, criterion, eval_func, args,
     elif isinstance(model, ODIN):
         test_ind_score = model.detect(dataset_ind, dataset_ind.splits['test'], device, args).cpu()
     else:
-        with torch.no_grad():
-            test_ind_score = model.detect(dataset_ind, dataset_ind.splits['test'], device, args).cpu()
+        #with torch.no_grad():
+        test_ind_score = model.detect(dataset_ind, dataset_ind.splits['test'], device, args).cpu()
     if isinstance(dataset_ood, list):
         result = []
         for d in dataset_ood:

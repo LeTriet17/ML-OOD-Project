@@ -357,21 +357,22 @@ class HybirdGNN(nn.Module):
                 GCNConv(hidden_channels, hidden_channels, cached=not save_mem)
             )
             self.bns.append(nn.BatchNorm1d(hidden_channels))
-
+        #print(hidden_channels, heads)
         self.convs.append(
             GATConv(
                 hidden_channels,
-                hidden_channels * heads,
+                hidden_channels,
                 dropout=dropout,
                 heads=heads,
                 concat=True,
             )
         )
+        self.bns.append(nn.BatchNorm1d(hidden_channels * heads))
         for _ in range(num_layers):
             self.convs.append(
                 GATConv(
                     hidden_channels * heads,
-                    hidden_channels * heads,
+                    hidden_channels,
                     dropout=dropout,
                     heads=heads,
                     concat=True,

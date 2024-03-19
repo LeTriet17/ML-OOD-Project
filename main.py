@@ -10,7 +10,7 @@ from data_utils import normalize, gen_normalized_adjs, evaluate_classify, evalua
 from dataset import load_dataset
 from parse import parser_add_main_args
 from baselines import *
-from gnnsafe import *
+from model import *
 
 def fix_seed(seed):
     random.seed(seed)
