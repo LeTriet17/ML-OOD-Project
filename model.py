@@ -124,23 +124,30 @@ class GNNSafe(nn.Module):
         '''return negative energy, a vector for all input nodes'''
         
         if args.grad_norm:
-            with torch.autograd.set_grad_enabled(True):
-                x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
-                logits = self.encoder(x, edge_index)
-                kl_div_loss_total = 0
-                gradnorms = []
+            confs = []
+            x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
+
+            for sub_x in x:
+                sub_x = Variable(sub_x, requires_grad=True)
                 
-                for logit in logits:
-                    kl_div_loss_total += kl_div_loss(logit, args.T)
+                sub_x = sub_x.unsqueeze(0)
+                self.encoder.zero_grad()
+                logit = self.encoder(x, edge_index)
 
-                kl_div_loss_total.backward()
+                loss = -args.T * torch.logsumexp(logit / args.T, dim=-1).sum()
 
-                for param in self.encoder.convs[-1].parameters():
-                    grad = param.grad.flatten()
-                    gradnorm = torch.norm(grad, p=2, dim=-1)
-                    gradnorms.append(gradnorm)
+                loss = torch.autograd.Variable(loss, requires_grad = True)
+                loss.backward()
 
-                return torch.stack(gradnorms, dim=0)
+                layer_grad = self.encoder.convs[-1].lin_dst.weight.data.T
+
+                conf = torch.norm(layer_grad, p=2, dim=-1)
+                mean_conf = torch.mean(conf)
+                flatten_conf = torch.sigmoid(mean_conf)
+                confs.append(flatten_conf)
+
+            confs = torch.stack(confs, dim=0)
+            return confs[node_idx] 
         else:
             x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
             logits = self.encoder(x, edge_index)
@@ -151,6 +158,8 @@ class GNNSafe(nn.Module):
                 neg_energy = args.T * torch.logsumexp(logits / args.T, dim=-1)
             if args.use_prop: # use energy belief propagation
                 neg_energy = self.propagation(neg_energy, edge_index, args.K, args.alpha)
+            
+            print(f'shape of neg_energy: {neg_energy[node_idx][:10]}')
             return neg_energy[node_idx]
 
         

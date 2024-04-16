@@ -120,10 +120,10 @@ class Logger_detect(object):
                 for k in range(ood_te_num):
                     r = best_result[:, k * 3]
                     print(f'OOD Test {k + 1} Final AUROC: {r.mean():.2f}')
-                    r = best_result[:, k * 3 + 1]
-                    print(f'OOD Test {k + 1} Final AUPR: {r.mean():.2f}')
-                    r = best_result[:, k * 3 + 2]
-                    print(f'OOD Test {k + 1} Final FPR: {r.mean():.2f}')
+                    #r = best_result[:, k * 3 + 1]
+                    #print(f'OOD Test {k + 1} Final AUPR: {r.mean():.2f}')
+                    #r = best_result[:, k * 3 + 2]
+                    #print(f'OOD Test {k + 1} Final FPR: {r.mean():.2f}')
                 r = best_result[:, -1]
                 print(f'IND Test Score: {r.mean():.2f}')
             else:
