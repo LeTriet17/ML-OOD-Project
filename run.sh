@@ -2,12 +2,11 @@
 
 backbones=("hybrid" "gcn"  "gen" "gat")
 ood_types=("structure" "feature" "label")
-#datasets=("cora" "amazon-photo" "coauthor-cs" "twitch" "arxiv")
-datasets=("twitch")
+datasets=("cora" "amazon-photo" "coauthor-cs" "twitch" "arxiv")
 use_reg_options=("" "--use_reg --m_in -5 --m_out -1")
 use_prop_options=("" "--use_prop")
 use_oc_options=("" "--use_oc")
-use_gradnorm_options=("" "--grad_norm")
+use_gradnorm_options=("--grad_norm")
 epochs=125
 device=0
 lamda1=0.01

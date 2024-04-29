@@ -156,6 +156,8 @@ def save_result(results, args):
         name += '_prop'
     if args.use_oc:
         name += '_oc'
+    if args.grad_norm:
+        name+='_grad_norm'
         
     with open(filename, 'a+') as write_obj:
 

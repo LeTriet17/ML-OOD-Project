@@ -6,6 +6,8 @@ from torch_geometric.utils import degree
 from backbone import *
 import numpy as np
 from torch.autograd import Variable 
+from sklearn.covariance import EmpiricalCovariance
+
 def init_center(args, eps=0.001):
     """Initialize hypersphere center c as the mean from an initial forward pass on the data."""
     if args.gpu < 0:
@@ -25,6 +27,18 @@ def init_center(args, eps=0.001):
 
     return c
 
+
+def get_edges_with_x(edge_index, x_index):
+    # Get the first row and second row of the edge_index tensor
+    row, col = edge_index
+
+    # Check if either row matches the x_index
+    mask = (row == x_index) | (col == x_index)
+
+    # Get the corresponding edge indices
+    matching_edges = edge_index[:, mask]
+
+    return matching_edges
 
 def get_radius(dist: torch.Tensor, nu: float):
     """Optimally solve for radius R via the (1-nu)-quantile of distances."""
@@ -123,44 +137,81 @@ class GNNSafe(nn.Module):
     def detect(self, dataset, node_idx, device, args):
         '''return negative energy, a vector for all input nodes'''
         
+    # if args.grad_norm:
+    #     confs = []
+    #     x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
+
+    #     print(f'shape of x: {x.shape}')
+    #     for i, sub_x in enumerate(x):
+    #         sub_x = Variable(sub_x, requires_grad=True)
+
+    #         sub_edge_index = get_edges_with_x(edge_index, i)
+    #         sub_x = sub_x.unsqueeze(0)
+    #         print(sub_edge_index)
+    #         print(f'shape of sub_x: {sub_edge_index}')
+    #         self.encoder.zero_grad()
+    #         logit = self.encoder(sub_x, sub_edge_index)
+
+    #         loss = -args.T * torch.logsumexp(logit / args.T, dim=-1).sum()
+
+    #         loss = torch.autograd.Variable(loss, requires_grad = True)
+    #         loss.backward()
+
+    #         layer_grad = self.encoder.convs[-1].lin_dst.weight.data.T
+
+    #         conf = torch.norm(layer_grad, p=2, dim=-1)
+    #         mean_conf = torch.mean(conf)
+    #         flatten_conf = torch.sigmoid(mean_conf)
+    #         confs.append(flatten_conf)
+
+    #     confs = torch.stack(confs, dim=0)
+    #     return confs[node_idx] 
+    # else:
+        x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
+        logits = self.encoder(x, edge_index)
+        if args.dataset in ('proteins', 'ppi'): # for multi-label binary classification
+            logits = torch.stack([logits, torch.zeros_like(logits)], dim=2)
+            neg_energy = args.T * torch.logsumexp(logits / args.T, dim=-1).sum(dim=1)
+        else: # for single-label multi-class classification
+            neg_energy = args.T * torch.logsumexp(logits / args.T, dim=-1)
+        if args.use_prop: # use energy belief propagation
+            neg_energy = self.propagation(neg_energy, edge_index, args.K, args.alpha)
+
         if args.grad_norm:
-            confs = []
-            x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
+            ec = EmpiricalCovariance(assume_centered=True)
+            ec.fit(x.cpu().numpy())
+            eig_vals, eigen_vectors = torch.linalg.eig(torch.tensor(ec.covariance_, dtype=torch.float32))
+            # Compute the magnitudes of the eigenvalues
+            eig_magnitudes = torch.abs(eig_vals)
 
-            for sub_x in x:
-                sub_x = Variable(sub_x, requires_grad=True)
-                
-                sub_x = sub_x.unsqueeze(0)
-                self.encoder.zero_grad()
-                logit = self.encoder(x, edge_index)
+            # Sort based on the magnitudes (descending order)
+            sorted_indices = torch.argsort(eig_magnitudes, descending=True)
 
-                loss = -args.T * torch.logsumexp(logit / args.T, dim=-1).sum()
+            # Select the top 512 eigen vectors based on sorted indices
+            NS = eigen_vectors[:, sorted_indices[:512]].to(device)
+            # NS = (eigen_vectors.t()[torch.argsort(eig_vals * -1)[512:]].t()).contiguous()
 
-                loss = torch.autograd.Variable(loss, requires_grad = True)
-                loss.backward()
+            vlogit_id_train = torch.norm(torch.matmul(x, torch.abs(NS)), dim=-1)
+            alpha = x.max(dim=-1)[0].mean() / vlogit_id_train.mean()
 
-                layer_grad = self.encoder.convs[-1].lin_dst.weight.data.T
+            vlogit_id_val = torch.norm(torch.matmul(x, torch.abs(NS)), dim=-1) * alpha
+            energy_id_val = torch.logsumexp(x, dim=-1)
+            score_id = -vlogit_id_val + energy_id_val
 
-                conf = torch.norm(layer_grad, p=2, dim=-1)
-                mean_conf = torch.mean(conf)
-                flatten_conf = torch.sigmoid(mean_conf)
-                confs.append(flatten_conf)
+            sum_values = neg_energy[node_idx] + score_id[node_idx]
 
-            confs = torch.stack(confs, dim=0)
-            return confs[node_idx] 
-        else:
-            x, edge_index = dataset.x.to(device), dataset.edge_index.to(device)
-            logits = self.encoder(x, edge_index)
-            if args.dataset in ('proteins', 'ppi'): # for multi-label binary classification
-                logits = torch.stack([logits, torch.zeros_like(logits)], dim=2)
-                neg_energy = args.T * torch.logsumexp(logits / args.T, dim=-1).sum(dim=1)
-            else: # for single-label multi-class classification
-                neg_energy = args.T * torch.logsumexp(logits / args.T, dim=-1)
-            if args.use_prop: # use energy belief propagation
-                neg_energy = self.propagation(neg_energy, edge_index, args.K, args.alpha)
-            
-            print(f'shape of neg_energy: {neg_energy[node_idx][:10]}')
-            return neg_energy[node_idx]
+            # Find the minimum and maximum values of the sum
+            min_val = torch.min(sum_values)
+            max_val = torch.max(sum_values)
+
+            # Subtract the minimum value from the sum to shift it down to start from 0
+            shifted_sum = sum_values - min_val
+
+            # Divide the shifted sum by the maximum value to normalize it to the range (0, 1)
+            normalized_sum = shifted_sum / (max_val - min_val)
+
+            return normalized_sum
+        return neg_energy[node_idx]
 
         
 
